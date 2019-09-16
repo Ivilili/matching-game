@@ -1,0 +1,54 @@
+html {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background: turquoise;
+}
+
+.App {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.rating {
+	display: inline-flex;
+	justify-content: space-around;
+	padding: 1rem;
+	margin-right: 0.5rem;
+}
+.deck {
+	width: 85%;
+	background: #d9d9d9;
+	padding: 1rem;
+	border-radius: 4px;
+	box-shadow: 8px 9px 26px 0 rgba(46, 61, 73, 0.5);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+}
+.deck .card {
+	margin: auto;
+	background: #141214;
+	color: #ffffff;
+	border-radius: 5px;
+	cursor: pointer;
+	box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+	flex: 25%;
+	max-width: 25%;
+	height: 3.7rem;
+	width: 3.7rem;
+	justify-content: center;
+	align-items: center;
+}
