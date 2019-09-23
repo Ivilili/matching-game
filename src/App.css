@@ -1,54 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
 html {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
-*,
-*::before,
-*::after {
-	box-sizing: inherit;
-}
 
 body {
-	width: 100%;
+	background: #f8f8f8;
 	height: 100%;
-	background: turquoise;
+	width: 100%;
+	font-family: Orbitron, sans-serif;
 }
-
 .App {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 }
+
 .rating {
 	display: inline-flex;
-	justify-content: space-around;
 	padding: 1rem;
-	margin-right: 0.5rem;
+	align-items: center;
 }
+.star,
+.moves,
+.timer,
+.redo {
+	padding-right: 20px;
+}
+
 .deck {
-	width: 85%;
-	background: #d9d9d9;
+	width: 80%;
 	padding: 1rem;
+	margin-top: 2rem;
+	background: rgb(2, 0, 36);
+	background: linear-gradient(45deg, rgba(160, 24, 180, 1) 40%, rgba(0, 155, 255, 1) 88%, rgba(0, 155, 255, 1) 100%);
 	border-radius: 4px;
 	box-shadow: 8px 9px 26px 0 rgba(46, 61, 73, 0.5);
 	display: flex;
+	justify-content: space-between;
 	flex-wrap: wrap;
-	justify-content: space-around;
-	align-items: center;
 }
+
 .deck .card {
-	margin: auto;
-	background: #141214;
+	width: 20%;
+	height: 20%;
 	color: #ffffff;
+	margin: 1%;
+	padding: 1.2%;
 	border-radius: 5px;
 	cursor: pointer;
 	box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-	flex: 25%;
-	max-width: 25%;
-	height: 3.7rem;
-	width: 3.7rem;
+	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.back {
+	width: 20%;
+	height: 20%;
+	display: block;
+	background: #000;
+	font-size: 0;
+}
+.front {
+	width: 20%;
+	height: 20%;
+	background-color: rgb(100, 193, 255);
+	margin: 1%;
+	padding: 1.2%;
+	border-radius: 5px;
+	cursor: pointer;
+	box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media only screen and (min-width: 700px) {
+	.deck {
+		width: 580px;
+		height: 580px;
+		margin-bottom: 2%;
+		margin-top: 0.5%;
+	}
+	.deck .card {
+		margin: 0.2%;
+	}
 }
