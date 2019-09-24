@@ -57,7 +57,7 @@ class App extends Component {
 	};
 
 	handleClick = (id) => {
-		const { isFlipped, cards, matched } = this.state;
+		const { isFlipped, cards } = this.state;
 		const flip = isFlipped;
 		flip[id] = true;
 		let cardsFlipped = 0;
@@ -96,7 +96,7 @@ class App extends Component {
 		const { cards, matched, flipped } = this.state;
 		return (
 			<div className="App">
-				<h1>Memory Game</h1>
+				<h2>Matching Game</h2>
 				<div className="rating">
 					<div className="star">
 						<FontAwesomeIcon icon={faStar} />
