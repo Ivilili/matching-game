@@ -29,6 +29,10 @@ body {
 .timer,
 .redo {
 	padding-right: 20px;
+	cursor: pointer;
+}
+.redo-icon {
+	padding-left: 2px;
 }
 
 .deck {

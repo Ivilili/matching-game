@@ -46,18 +46,16 @@ function shuffle(array) {
 	}
 	return newArr;
 }
-
 class App extends Component {
 	state = {
 		isFlipped: new Array(16).fill(false),
 		cards: shuffle(myIcons.slice()),
-		flipped: [],
 		matched: [],
 		counter: 0
 	};
 
 	handleClick = (id) => {
-		const { isFlipped, cards } = this.state;
+		const { isFlipped, cards, matched } = this.state;
 		const flip = isFlipped;
 		flip[id] = true;
 		let cardsFlipped = 0;
@@ -70,43 +68,62 @@ class App extends Component {
 			}
 		});
 		if (cardsFlipped < 3) {
-			//if only 2 are flipped it continues on
 			this.setState({
 				isFlipped: flip
 			});
 		}
+
 		//checking for match
-		const openCard = cards.filter((_, i) => isFlipped[i]);
-		console.log(openCard);
+		const openCard = cards.filter((y, i) => isFlipped[i]);
+
 		if (openCard.length === 2) {
 			if (openCard[0] === openCard[1]) {
 				this.setState({
-					matched: [ openCard[0], openCard[1] ]
+					matched: matched.push(openCard[0], openCard[1])
 				});
+				//remove matched
+				const newCards = cards.filter((card) => !matched.includes(card));
+				let matchedArr = matched;
+
+				console.log(matchedArr);
+
+				console.log(newCards);
 			} else {
-				setTimeout(() => this.setState({ isFlipped: new Array(16).fill(false) }), 1500);
+				setTimeout(() => this.setState({ isFlipped: new Array(cards.length).fill(false) }), 1500);
 			}
+		} else {
+			return;
 		}
 	};
 	match = (arr) => {
 		return arr.every((val, i, array) => val === array[0]);
 	};
+	timer = () => {
+		setInterval(() => {
+			this.setState((prevState) => ({
+				counter: prevState.counter + 1
+			}));
+		}, 1000);
+	};
+	newGame = () => {
+		this.setState({
+			isFlipped: new Array(16).fill(false),
+			cards: shuffle(myIcons.slice()),
+			matched: [],
+			counter: 0
+		});
+	};
 
 	render() {
-		const { cards, matched, flipped } = this.state;
+		const { cards, matched, isFlipped } = this.state;
 		return (
 			<div className="App">
 				<h2>Matching Game</h2>
 				<div className="rating">
-					<div className="star">
-						<FontAwesomeIcon icon={faStar} />
-						<FontAwesomeIcon icon={faStar} />
-						<FontAwesomeIcon icon={faStar} />
-					</div>
-					<span className="moves">0 Move(s)</span>
-					<div className="timer">Time</div>
-					<div className="redo">
-						<FontAwesomeIcon icon={faRedo} />
+					<div className="timer" />
+					<div className="redo" onClick={this.newGame}>
+						New Game
+						<FontAwesomeIcon className="redo-icon" icon={faRedo} />
 					</div>
 				</div>
 				<div className="deck" id="card-deck">
@@ -116,9 +133,8 @@ class App extends Component {
 							handleClick={this.handleClick}
 							id={id}
 							icon={icon}
-							flipped={flipped}
 							matched={matched}
-							isFlipped={this.state.isFlipped[id]}
+							isFlipped={isFlipped[id]}
 						/>
 					))}
 				</div>
