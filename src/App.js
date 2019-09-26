@@ -71,40 +71,34 @@ class App extends Component {
 			this.setState({
 				isFlipped: flip
 			});
-		}
 
-		//checking for match
-		const openCard = cards.filter((y, i) => isFlipped[i]);
+			//checking for match
+			const openCard = cards.filter((y, i) => isFlipped[i]);
 
-		if (openCard.length === 2) {
-			if (openCard[0] === openCard[1]) {
-				this.setState({
-					matched: matched.push(openCard[0], openCard[1])
-				});
-				//remove matched
-				const newCards = cards.filter((card) => !matched.includes(card));
-				let matchedArr = matched;
-
-				console.log(matchedArr);
-
-				console.log(newCards);
-			} else {
-				setTimeout(() => this.setState({ isFlipped: new Array(cards.length).fill(false) }), 1500);
+			if (openCard.length === 2) {
+				if (this.match(openCard)) {
+					this.setState({
+						matched: [ ...matched, openCard[0] ]
+					});
+					console.log(openCard[0]);
+					const newCards = cards.filter((card) => !matched.includes(card));
+					this.setState({
+						cards: newCards,
+						isFlipped: new Array(cards.length).fill(false)
+					});
+				} else {
+					setTimeout(() => this.setState({ isFlipped: new Array(cards.length).fill(false) }), 1500);
+				}
 			}
 		} else {
 			return;
 		}
 	};
+
 	match = (arr) => {
 		return arr.every((val, i, array) => val === array[0]);
 	};
-	timer = () => {
-		setInterval(() => {
-			this.setState((prevState) => ({
-				counter: prevState.counter + 1
-			}));
-		}, 1000);
-	};
+
 	newGame = () => {
 		this.setState({
 			isFlipped: new Array(16).fill(false),
@@ -129,7 +123,7 @@ class App extends Component {
 				<div className="deck" id="card-deck">
 					{cards.map((icon, id) => (
 						<Card
-							key={id}
+							key={`${icon}-${id}`}
 							handleClick={this.handleClick}
 							id={id}
 							icon={icon}
