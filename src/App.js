@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Card from './Card';
+import Deck from './Deck';
 import { library } from '@fortawesome/fontawesome-svg-core';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faStar,
@@ -19,24 +21,6 @@ import './App.css';
 
 library.add(faStar, faRedo, faLeaf, faPaperPlane, faAnchor, faPaw, faBolt, faRocket, faBicycle, faBomb);
 
-const myIcons = [
-	'rocket',
-	'paper-plane',
-	'anchor',
-	'paw',
-	'bolt',
-	'anchor',
-	'leaf',
-	'bicycle',
-	'rocket',
-	'bomb',
-	'leaf',
-	'bomb',
-	'bolt',
-	'bicycle',
-	'paper-plane',
-	'paw'
-];
 //Durstenfeld shuffle
 function shuffle(array) {
 	let newArr = array.slice();
@@ -47,69 +31,79 @@ function shuffle(array) {
 	return newArr;
 }
 class App extends Component {
-	state = {
-		isFlipped: new Array(16).fill(false),
-		cards: shuffle(myIcons.slice()),
-		matched: [],
-		counter: 0
-	};
-
-	handleClick = (id) => {
-		const { isFlipped, cards, matched } = this.state;
-		const flip = isFlipped;
-		flip[id] = true;
-		let cardsFlipped = 0;
-
-		flip.forEach((e) => {
-			if (e === true) {
-				cardsFlipped++;
-			} else {
-				return;
-			}
-		});
-		if (cardsFlipped < 3) {
-			this.setState({
-				isFlipped: flip
-			});
-
-			//checking for match
-			const openCard = cards.filter((y, i) => isFlipped[i]);
-
-			if (openCard.length === 2) {
-				if (this.match(openCard)) {
-					this.setState({
-						matched: [ ...matched, openCard[0] ]
-					});
-					console.log(openCard[0]);
-					const newCards = cards.filter((card) => !matched.includes(card));
-					this.setState({
-						cards: newCards,
-						isFlipped: new Array(cards.length).fill(false)
-					});
-				} else {
-					setTimeout(() => this.setState({ isFlipped: new Array(cards.length).fill(false) }), 1500);
-				}
-			}
-		} else {
-			return;
-		}
-	};
-
-	match = (arr) => {
-		return arr.every((val, i, array) => val === array[0]);
-	};
+	constructor() {
+		super();
+		this.state = {
+			cards: [],
+			matched: [],
+			flipped: [],
+			counter: 0,
+			disabled: false
+		};
+	}
+	UNSAFE_componentWillMount() {
+		this.newGame();
+	}
 
 	newGame = () => {
 		this.setState({
-			isFlipped: new Array(16).fill(false),
-			cards: shuffle(myIcons.slice()),
+			cards: shuffle(Deck()),
 			matched: [],
-			counter: 0
+			flipped: [],
+			counter: 0,
+			disabled: false
+		});
+	};
+	match = (id) => {
+		const { cards, flipped } = this.state;
+		const clickedCard = cards.find((card) => card.id === id);
+		const flippedCard = cards.find((card) => flipped[0] === card.id);
+		return flippedCard.icon === clickedCard.icon;
+	};
+
+	handleClick = (id) => {
+		const { matched, flipped } = this.state;
+
+		this.setState({
+			disabled: true
+		});
+		const sameCardClicked = (id) => {
+			this.state.flipped.includes(id);
+		};
+
+		if (flipped.length === 0) {
+			this.setState({
+				flipped: [ id ],
+				disabled: false
+			});
+		} else {
+			if (sameCardClicked(id)) return;
+
+			this.setState({
+				flipped: [ flipped[0], id ]
+			});
+
+			if (this.match(id)) {
+				this.setState({
+					matched: [ ...matched, flipped[0], id ]
+				});
+				this.resetCards();
+			} else {
+				setTimeout(this.resetCards, 750);
+			}
+		}
+	};
+
+	resetCards = () => {
+		this.setState({
+			flipped: [],
+			disabled: false
 		});
 	};
 
 	render() {
-		const { cards, matched, isFlipped } = this.state;
+		const { cards, matched, disabled, flipped } = this.state;
+
 		return (
 			<div className="App">
 				<h2>Matching Game</h2>
@@ -121,14 +115,15 @@ class App extends Component {
 					</div>
 				</div>
 				<div className="deck" id="card-deck">
-					{cards.map((icon, id) => (
+					{cards.map((card) => (
 						<Card
-							key={`${icon}-${id}`}
+							key={card.id}
 							handleClick={this.handleClick}
-							id={id}
-							icon={icon}
-							matched={matched}
-							isFlipped={isFlipped[id]}
+							id={card.id}
+							icon={card.icon}
+							matched={matched.includes(card.id)}
+							flipped={flipped.includes(card.id)}
+							disabled={disabled || matched.includes(card.id)}
 						/>
 					))}
 				</div>
