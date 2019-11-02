@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import Card from './Card';
 import Deck from './Deck';
 import { library } from '@fortawesome/fontawesome-svg-core';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faStar,
 	faRedo,
+	faStar,
 	faLeaf,
 	faPaperPlane,
 	faAnchor,
@@ -21,15 +20,6 @@ import './App.css';
 
 library.add(faStar, faRedo, faLeaf, faPaperPlane, faAnchor, faPaw, faBolt, faRocket, faBicycle, faBomb);
 
-//Durstenfeld shuffle
-function shuffle(array) {
-	let newArr = array.slice();
-	for (let i = array.length - 1; i > 0; i--) {
-		let j = Math.floor(Math.random() * (i + 1));
-		[ newArr[i], newArr[j] ] = [ newArr[j], newArr[i] ];
-	}
-	return newArr;
-}
 class App extends Component {
 	constructor() {
 		super();
@@ -45,15 +35,26 @@ class App extends Component {
 		this.newGame();
 	}
 
+	//Durstenfeld shuffle
+	shuffle = (array) => {
+		let newArr = array.slice();
+		for (let i = array.length - 1; i > 0; i--) {
+			let j = Math.floor(Math.random() * (i + 1));
+			[ newArr[i], newArr[j] ] = [ newArr[j], newArr[i] ];
+		}
+		return newArr;
+	};
+
 	newGame = () => {
 		this.setState({
-			cards: shuffle(Deck()),
+			cards: this.shuffle(Deck()),
 			matched: [],
 			flipped: [],
 			counter: 0,
 			disabled: false
 		});
 	};
+
 	match = (id) => {
 		const { cards, flipped } = this.state;
 		const clickedCard = cards.find((card) => card.id === id);
@@ -108,12 +109,11 @@ class App extends Component {
 			<div className="App">
 				<h2>Matching Game</h2>
 				<div className="rating">
-					<div className="timer" />
-					<div className="redo" onClick={this.newGame}>
-						New Game
+					<div className="redo" title="Play Again" onClick={this.newGame}>
 						<FontAwesomeIcon className="redo-icon" icon={faRedo} />
 					</div>
 				</div>
+
 				<div className="deck" id="card-deck">
 					{cards.map((card) => (
 						<Card

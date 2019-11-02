@@ -6,7 +6,8 @@ html {
 }
 
 body {
-	background: #f8f8f8;
+	background: url('backgr.jpg');
+	background-color: #d9d9d9;
 	height: 100%;
 	width: 100%;
 	font-family: Orbitron, sans-serif;
@@ -31,6 +32,7 @@ body {
 	padding-right: 20px;
 	cursor: pointer;
 }
+
 .redo-icon {
 	padding-left: 2px;
 }
@@ -61,17 +63,19 @@ body {
 	justify-content: center;
 	align-items: center;
 	line-height: 50px;
+	min-width: 40px;
 }
 
 .back {
-	width: 20%;
-	height: 20%;
-	display: block;
-	background: #000;
-	font-size: 0;
-	display: flex;
+	background: #000000;
+	display: none;
 }
+.back .font-icon {
+	color: #000000;
+}
+
 .front {
+	min-width: 40px;
 	width: 20%;
 	height: 20%;
 	background-color: rgb(100, 193, 255);
@@ -83,6 +87,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size: 3rem;
 }
 
 @media only screen and (min-width: 768px) {
