@@ -63,7 +63,7 @@ class App extends Component {
 	};
 
 	handleClick = (id) => {
-		const { matched, flipped } = this.state;
+		const { matched, flipped, counter } = this.state;
 
 		this.setState({
 			disabled: true
@@ -81,7 +81,8 @@ class App extends Component {
 			if (sameCardClicked(id)) return;
 
 			this.setState({
-				flipped: [ flipped[0], id ]
+				flipped: [ flipped[0], id ],
+				counter: counter + 1
 			});
 
 			if (this.match(id)) {
@@ -109,6 +110,7 @@ class App extends Component {
 			<div className="App">
 				<h2>Matching Game</h2>
 				<div className="rating">
+					<div className="moves">Moves: {this.state.counter}</div>
 					<div className="redo" title="Play Again" onClick={this.newGame}>
 						<FontAwesomeIcon className="redo-icon" icon={faRedo} />
 					</div>
