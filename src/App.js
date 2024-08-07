@@ -72,7 +72,7 @@ const App = () => {
     if (!isCalled) {
       newGame();
     }
-  }, [isCalled, newGame]);
+  }, []);
 
   useEffect(() => {
     if (matched.length === 16) {
