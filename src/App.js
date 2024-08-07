@@ -72,7 +72,8 @@ const App = () => {
     if (!isCalled) {
       newGame();
     }
-  }, [isCalled, newGame]);
+    // eslint-disable-next-line
+  }, [isCalled]);
 
   useEffect(() => {
     if (matched.length === 16) {
@@ -89,6 +90,7 @@ const App = () => {
         }
       });
     }
+    // eslint-disable-next-line
   }, [matched]);
 
   const handleClick = (id) => {
