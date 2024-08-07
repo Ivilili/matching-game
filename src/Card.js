@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "animate.css";
 
 function Card({ id, icon, handleClick, flipped, matched, disabled }) {
-  const visible = flipped || matched ? "front" : "back";
+  const visible = flipped ? "front" : "back";
 
   return (
     <div
@@ -12,7 +12,7 @@ function Card({ id, icon, handleClick, flipped, matched, disabled }) {
         visible === "front"
           ? `${visible} animate__animated animate__flipInY`
           : `${visible}`
-      }`}
+      } ${matched ? `front matched animate__animated animate__pulse` : ``}`}
       onClick={() => {
         if (!disabled) handleClick(id);
       }}
